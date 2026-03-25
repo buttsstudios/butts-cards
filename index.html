@@ -3,7 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://cards.buttsstudios.com/" />
     <title>Butts Cards - Strategic Card Game</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta name="description" content="Play Butts Cards — a free strategic card game online. Collect, trade, and compete from your browser.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://cards.buttsstudios.com/" />
+    <meta property="og:title" content="Butts Cards - Strategic Card Game" />
+    <meta property="og:description" content="Play Butts Cards — a free strategic card game online. Collect, trade, and compete from your browser." />
+    <meta property="og:image" content="https://cards.buttsstudios.com/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Butts Studios" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@buttsstudios" />
+    <meta name="twitter:creator" content="@buttsstudios" />
+    <meta name="twitter:url" content="https://cards.buttsstudios.com/" />
+    <meta name="twitter:title" content="Butts Cards - Strategic Card Game" />
+    <meta name="twitter:description" content="Play Butts Cards — a free strategic card game online. Collect, trade, and compete from your browser." />
+    <meta name="twitter:image" content="https://cards.buttsstudios.com/og-image.jpg" />
+
+    <!-- Pinterest -->
+    <meta name="pinterest-rich-pin" content="false" />
+
+    <!-- Theme & Mobile -->
+    <meta name="theme-color" content="#1a1a2e" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Butts Cards" />
+
+    <!-- JSON-LD VideoGame Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Butts Cards",
+      "description": "A strategic card game with unique mechanics and competitive multiplayer modes.",
+      "url": "https://cards.buttsstudios.com",
+      "image": "https://cards.buttsstudios.com/og-image.jpg",
+      "author": {
+        "@type": "Organization",
+        "name": "Butts Studios",
+        "url": "https://buttsstudios.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Butts Studios",
+        "url": "https://buttsstudios.com"
+      },
+      "genre": ["Strategy", "Card Game", "Multiplayer"],
+      "gamePlatform": ["Web Browser", "HTML5"]
+    }
+    </script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -139,9 +197,77 @@
             color: #888;
             font-size: 1.1rem;
         }
+        .premium-float {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #9C27B0, #E91E63);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+        }
+        .premium-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+        .premium-content {
+            background: #1a1a2e;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 400px;
+            position: relative;
+        }
+        .premium-content .close {
+            position: absolute;
+            top: 10px; right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .premium-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+        .premium-content li {
+            padding: 0.5rem 0;
+            color: #ccc;
+        }
+        .premium-content .price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #9C27B0;
+        }
     </style>
 </head>
 <body>
+    <a href="#" onclick="showPremium(event)" class="premium-float">Upgrade to Premium</a>
+    
+    <div class="premium-modal" id="premium-modal" style="display:none;">
+        <div class="premium-content">
+            <span onclick="closePremium()" class="close">&times;</span>
+            <h2>Upgrade to Premium</h2>
+            <p>Unlock all features!</p>
+            <ul>
+                <li>Unlimited Games</li>
+                <li>Special Cards</li>
+                <li>No Ads</li>
+                <li>Tournaments</li>
+            </ul>
+            <p class="price">$4.99/month</p>
+            <button onclick="buyPremium()" class="btn btn-primary">Subscribe Now</button>
+        </div>
+    </div>
+
     <div class="game-container">
         <header>
             <h1>Butts Cards</h1>
@@ -296,6 +422,29 @@
         
         // Start game
         newGame();
+        
+        // Premium functions
+        function showPremium(e) {
+            if(e) e.preventDefault();
+            document.getElementById('premium-modal').style.display = 'flex';
+        }
+        function closePremium() {
+            document.getElementById('premium-modal').style.display = 'none';
+        }
+    </script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        const stripe = Stripe('pk_live_51TBisj3Fr8U6X9hIo8bGhNNxcDogDxBI2x1Gpu23CzgBbiIkDOUaEAD3JjZ5DYutPBq4Cn0UjxxNQ6elDR6sMnOK00KqcwOnog');
+        
+        async function buyPremium() {
+            const { error } = await stripe.redirectToCheckout({
+                lineItems: [{ price: 'price_cards_premium', quantity: 1 }],
+                mode: 'payment',
+                successUrl: window.location.origin + '/?premium=true',
+                cancelUrl: window.location.origin + '/?cancelled=true',
+            });
+            if (error) console.error(error);
+        }
     </script>
 </body>
 </html>
