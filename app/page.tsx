@@ -2,6 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { saveScore, getLeaderboard } from '@/lib/firebase';
+import {
+  login as authLogin,
+  getPlayerName,
+  isPremium,
+  isLoggedIn,
+  getDailyTries,
+  canPlay,
+  logout as authLogout,
+  setPremium,
+  decrementTries,
+} from '@/lib/auth';
 
 interface Score {
   id: string;
@@ -18,9 +29,9 @@ interface Card {
   power: number;
 }
 
-export default function ButtsCards() {
+export default function CardBattle() {
   const [playerName, setPlayerName] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedInState, setIsLoggedInState] = useState(false);
   const [playerHand, setPlayerHand] = useState<Card[]>([]);
   const [opponentHand, setOpponentHand] = useState<Card[]>([]);
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
@@ -32,13 +43,24 @@ export default function ButtsCards() {
   const [opponentPlayed, setOpponentPlayed] = useState<Card | null>(null);
   const [leaderboard, setLeaderboard] = useState<Score[]>([]);
   const [gameOver, setGameOver] = useState(false);
+  const [dailyTries, setDailyTries] = useState(5);
+  const [isPremiumUser, setIsPremiumUser] = useState(false);
+  const [showPaywallModal, setShowPaywallModal] = useState(false);
+  const [paywallMessage, setPaywallMessage] = useState('');
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    const name = getPlayerName();
+    if (name) {
+      setPlayerName(name);
+      setIsLoggedInState(true);
+      setDailyTries(getDailyTries());
+      setIsPremiumUser(isPremium());
       loadLeaderboard();
       newGame();
     }
-  }, [isLoggedIn]);
+  }, []);
 
   const loadLeaderboard = async () => {
     const scores = await getLeaderboard();
@@ -62,6 +84,12 @@ export default function ButtsCards() {
   };
 
   const newGame = () => {
+    if (!canPlay()) {
+      setPaywallMessage('Daily limit reached! Come back tomorrow for more free games.');
+      setShowPaywallModal(true);
+      return;
+    }
+
     setPlayerScore(0);
     setOpponentScore(0);
     setRound(1);
@@ -70,13 +98,17 @@ export default function ButtsCards() {
     setPlayerPlayed(null);
     setOpponentPlayed(null);
     setGameOver(false);
+    setGameStarted(false);
     dealCards();
   };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (playerName.trim()) {
-      setIsLoggedIn(true);
+      authLogin(playerName.trim());
+      setIsLoggedInState(true);
+      setDailyTries(getDailyTries());
+      setIsPremiumUser(isPremium());
     }
   };
 
@@ -88,6 +120,12 @@ export default function ButtsCards() {
     if (selectedCard === null) {
       setMessage('Please select a card first!');
       return;
+    }
+
+    if (!gameStarted) {
+      setGameStarted(true);
+      decrementTries();
+      setDailyTries(getDailyTries());
     }
 
     const playerCard = playerHand[selectedCard];
@@ -140,11 +178,32 @@ export default function ButtsCards() {
     }
   };
 
-  if (!isLoggedIn) {
+  const handleNewGame = () => {
+    const remaining = getDailyTries();
+    if (remaining <= 0) {
+      setPaywallMessage('Daily limit reached! Come back tomorrow for more free games.');
+      setShowPaywallModal(true);
+      return;
+    }
+    newGame();
+  };
+
+  const handleLogout = () => {
+    authLogout();
+    setIsLoggedInState(false);
+    setPlayerName('');
+    setGameOver(false);
+  };
+
+  const handleUpgradeClick = () => {
+    setShowUpgradeModal(true);
+  };
+
+  if (!isLoggedInState) {
     return (
       <div className="login-overlay">
         <div className="login-box">
-          <h1>Butts Cards</h1>
+          <h1>Card Battle</h1>
           <p style={{ marginBottom: '1rem', color: '#888' }}>Enter your name to play</p>
           <form onSubmit={handleLogin}>
             <input
@@ -166,9 +225,21 @@ export default function ButtsCards() {
   return (
     <div className="game-container">
       <header>
-        <h1>Butts Cards</h1>
+        <div className="header-row">
+          <h1>Card Battle</h1>
+          <div className="header-actions">
+            {!isPremiumUser && (
+              <button className="btn btn-premium btn-small" onClick={handleUpgradeClick}>
+                Upgrade
+              </button>
+            )}
+            {isPremiumUser && <span className="premium-badge">Premium</span>}
+            <button className="btn btn-small btn-secondary" onClick={handleLogout}>Logout</button>
+          </div>
+        </div>
         <div className="stats">
           <div className="stat">Player: {playerName}</div>
+          <div className="stat">Tries: {dailyTries}/5</div>
           <div className="stat">Your Score: {playerScore}</div>
           <div className="stat">Opponent: {opponentScore}</div>
           <div className="stat">Cards Left: {playerHand.length}</div>
@@ -220,7 +291,7 @@ export default function ButtsCards() {
           <button className="btn btn-primary" onClick={playCard} disabled={gameOver}>
             Play Card
           </button>
-          <button className="btn btn-secondary" onClick={newGame}>
+          <button className="btn btn-secondary" onClick={handleNewGame}>
             New Game
           </button>
         </div>
@@ -239,6 +310,36 @@ export default function ButtsCards() {
           )}
         </div>
       </div>
+
+      {showPaywallModal && (
+        <div className="paywall-overlay" onClick={() => setShowPaywallModal(false)}>
+          <div className="paywall-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>🔒 Daily Limit Reached</h2>
+            <p>{paywallMessage}</p>
+            <button className="btn btn-primary" onClick={() => setShowPaywallModal(false)}>
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showUpgradeModal && (
+        <div className="paywall-overlay" onClick={() => setShowUpgradeModal(false)}>
+          <div className="paywall-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>⭐ Upgrade to Premium</h2>
+            <p>Get unlimited plays and an ad-free experience!</p>
+            <ul className="premium-features">
+              <li>✓ Unlimited daily games</li>
+              <li>✓ Ad-free experience (coming soon)</li>
+              <li>✓ Special card decks (coming soon)</li>
+            </ul>
+            <p style={{ color: '#888', fontSize: '0.9rem', marginTop: '1rem' }}>Premium subscription coming soon!</p>
+            <button className="btn btn-primary" onClick={() => setShowUpgradeModal(false)}>
+              Coming Soon
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
