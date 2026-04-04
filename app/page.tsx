@@ -38,6 +38,7 @@ export default function CardBattle() {
   const [playerScore, setPlayerScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
   const [round, setRound] = useState(1);
+  const [showHelp, setShowHelp] = useState(false);
   const [message, setMessage] = useState('Enter your name to play');
   const [playerPlayed, setPlayerPlayed] = useState<Card | null>(null);
   const [opponentPlayed, setOpponentPlayed] = useState<Card | null>(null);
@@ -241,6 +242,7 @@ export default function CardBattle() {
               </button>
             )}
             {isPremiumUser && <span className="premium-badge">Premium</span>}
+            <button className="btn btn-small btn-secondary" onClick={() => setShowHelp(true)}>How to Play</button>
             <button className="btn btn-small btn-secondary" onClick={handleLogout}>Logout</button>
           </div>
         </div>
@@ -342,6 +344,30 @@ export default function CardBattle() {
             <p className="premium-price">$2.99</p>
             <button className="btn btn-primary" onClick={() => window.open('https://buy.stripe.com/4gM8wIfh94I42yl5Xh7Re08', '_blank')}>
               Unlock Now
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showHelp && (
+        <div className="paywall-overlay" onClick={() => setShowHelp(false)}>
+          <div className="paywall-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>🎯 How to Play</h2>
+            <div style={{ textAlign: 'left', marginTop: '1rem' }}>
+              <p><strong>Goal:</strong> Score more points than your opponent by playing higher cards.</p>
+              <p style={{ marginTop: '0.5rem' }}><strong>How to play:</strong></p>
+              <ul style={{ marginLeft: '1.5rem', lineHeight: '1.8' }}>
+                <li>Select one of your cards by clicking on it</li>
+                <li>Click "Play Card" to challenge the opponent</li>
+                <li>If your card is higher, you win the round and get points</li>
+                <li>If opponent's card is higher, they win</li>
+                <li>Tie = no points for either player</li>
+              </ul>
+              <p style={{ marginTop: '0.5rem' }}><strong>Card Values:</strong> 2 (lowest) → A (highest)</p>
+              <p style={{ marginTop: '0.5rem' }}><strong>Scoring:</strong> Win a round = card value in points. First to 5 cards loses!</p>
+            </div>
+            <button className="btn btn-primary" style={{ marginTop: '1.5rem' }} onClick={() => setShowHelp(false)}>
+              Got it!
             </button>
           </div>
         </div>
