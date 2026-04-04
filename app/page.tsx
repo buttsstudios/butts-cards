@@ -51,6 +51,13 @@ export default function CardBattle() {
   const [gameStarted, setGameStarted] = useState(false);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('premium') === 'true') {
+      setPremium(true);
+      setIsPremiumUser(true);
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+    
     const name = getPlayerName();
     if (name) {
       setPlayerName(name);
@@ -333,7 +340,7 @@ export default function CardBattle() {
               <li>✓ One-time purchase, yours forever</li>
             </ul>
             <p className="premium-price">$2.99</p>
-            <button className="btn btn-primary" onClick={() => window.open('https://buy.stripe.com/cNi3co5Gz4I40qd0CX7Re06', '_blank')}>
+            <button className="btn btn-primary" onClick={() => window.open('https://buy.stripe.com/4gM8wIfh94I42yl5Xh7Re08', '_blank')}>
               Unlock Now
             </button>
           </div>
