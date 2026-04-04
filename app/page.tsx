@@ -326,16 +326,15 @@ export default function CardBattle() {
       {showUpgradeModal && (
         <div className="paywall-overlay" onClick={() => setShowUpgradeModal(false)}>
           <div className="paywall-modal" onClick={(e) => e.stopPropagation()}>
-            <h2>⭐ Upgrade to Premium</h2>
+            <h2>⭐ Unlock Premium</h2>
             <p>Get unlimited plays and an ad-free experience!</p>
             <ul className="premium-features">
               <li>✓ Unlimited daily games</li>
-              <li>✓ Ad-free experience (coming soon)</li>
-              <li>✓ Special card decks (coming soon)</li>
+              <li>✓ One-time purchase, yours forever</li>
             </ul>
-            <p style={{ color: '#888', fontSize: '0.9rem', marginTop: '1rem' }}>Premium subscription coming soon!</p>
-            <button className="btn btn-primary" onClick={() => setShowUpgradeModal(false)}>
-              Coming Soon
+            <p className="premium-price">$2.99</p>
+            <button className="btn btn-primary" onClick={() => window.open('https://buy.stripe.com/cNi3co5Gz4I40qd0CX7Re06', '_blank')}>
+              Unlock Now
             </button>
           </div>
         </div>
