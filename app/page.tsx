@@ -44,6 +44,7 @@ export default function CardBattle() {
   const [opponentPlayed, setOpponentPlayed] = useState<Card | null>(null);
   const [leaderboard, setLeaderboard] = useState<Score[]>([]);
   const [gameOver, setGameOver] = useState(false);
+  const [showWinModal, setShowWinModal] = useState(false);
   const [dailyTries, setDailyTries] = useState(5);
   const [isPremiumUser, setIsPremiumUser] = useState(false);
   const [showPaywallModal, setShowPaywallModal] = useState(false);
@@ -167,19 +168,18 @@ export default function CardBattle() {
 
     if (newPlayerHand.length === 0) {
       setGameOver(true);
-      let finalMessage = '';
       const finalPlayerScore = playerCard.power > opponentCard.power ? playerScore + 1 : playerScore;
       const finalOpponentScore = playerCard.power < opponentCard.power ? opponentScore + 1 : opponentScore;
       
       if (finalPlayerScore > finalOpponentScore) {
-        finalMessage = `Game Over - You Win! (${finalPlayerScore}-${finalOpponentScore})`;
+        setMessage(`Game Over - You Win! (${finalPlayerScore}-${finalOpponentScore}) 🎉`);
+        setShowWinModal(true);
         saveScore(playerName, finalPlayerScore);
       } else if (finalPlayerScore < finalOpponentScore) {
-        finalMessage = `Game Over - You Lose! (${finalOpponentScore}-${finalPlayerScore})`;
+        setMessage(`Game Over - You Lose! (${finalOpponentScore}-${finalPlayerScore})`);
       } else {
-        finalMessage = `Game Over - Tie! (${finalPlayerScore}-${finalOpponentScore})`;
+        setMessage(`Game Over - Tie! (${finalPlayerScore}-${finalOpponentScore})`);
       }
-      setMessage(finalMessage);
       loadLeaderboard();
     } else {
       setMessage(roundMessage);
@@ -308,7 +308,7 @@ export default function CardBattle() {
         <div className="leaderboard">
           <h3>🏆 Leaderboard</h3>
           {leaderboard.length === 0 ? (
-            <p style={{ textAlign: 'center', color: '#666' }}>No scores yet</p>
+            <p style={{ textAlign: 'center', color: '#666' }}>No scores yet - be the first! 🃏</p>
           ) : (
             leaderboard.map((entry, i) => (
               <div key={entry.id} className="leaderboard-entry">
@@ -369,6 +369,32 @@ export default function CardBattle() {
             <button className="btn btn-primary" style={{ marginTop: '1.5rem' }} onClick={() => setShowHelp(false)}>
               Got it!
             </button>
+          </div>
+        </div>
+      )}
+
+      {showWinModal && (
+        <div className="paywall-overlay" onClick={() => setShowWinModal(false)}>
+          <div className="paywall-modal" style={{ borderColor: '#4CAF50' }} onClick={(e) => e.stopPropagation()}>
+            <h2 style={{ color: '#4CAF50' }}>🎉 You Win!</h2>
+            <p>Congratulations on your victory!</p>
+            <p className="premium-price">{playerScore + 1} pts</p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1rem' }}>
+              <button className="btn btn-primary" onClick={() => setShowWinModal(false)}>
+                Awesome!
+              </button>
+              <button className="btn btn-secondary" onClick={() => {
+                const text = `I won Card Battle with ${playerScore + 1} points! Can you beat me? 🃏`;
+                if (navigator.share) {
+                  navigator.share({ text });
+                } else {
+                  navigator.clipboard.writeText(text);
+                  setMessage('Score copied to clipboard!');
+                }
+              }}>
+                Share
+              </button>
+            </div>
           </div>
         </div>
       )}
