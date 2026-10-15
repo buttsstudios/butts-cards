@@ -54,10 +54,18 @@ export default function CardBattle() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('premium') === 'true') {
-      setPremium(true);
-      setIsPremiumUser(true);
+    const sessionId = params.get('session_id');
+    if (sessionId) {
       window.history.replaceState({}, '', window.location.pathname);
+      fetch(`/api/verify-purchase?session_id=${encodeURIComponent(sessionId)}`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (d && d.premium === true) {
+            setPremium(true);
+            setIsPremiumUser(true);
+          }
+        })
+        .catch(() => {});
     }
     
     const name = getPlayerName();
@@ -336,10 +344,10 @@ export default function CardBattle() {
         <div className="paywall-overlay" onClick={() => setShowUpgradeModal(false)}>
           <div className="paywall-modal" onClick={(e) => e.stopPropagation()}>
             <h2>⭐ Unlock Premium</h2>
-            <p>Get unlimited plays and an ad-free experience!</p>
+            <p>Get unlimited daily plays.</p>
             <ul className="premium-features">
               <li>✓ Unlimited daily games</li>
-              <li>✓ One-time purchase, yours forever</li>
+              <li>✓ One-time purchase, unlocked in this browser</li>
             </ul>
             <p className="premium-price">$2.99</p>
             <button className="btn btn-primary" onClick={() => window.open('https://buy.stripe.com/4gM8wIfh94I42yl5Xh7Re08', '_blank')}>
