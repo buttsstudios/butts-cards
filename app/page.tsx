@@ -349,8 +349,8 @@ export default function CardBattle() {
               <li>✓ Unlimited daily games</li>
               <li>✓ One-time purchase, unlocked in this browser</li>
             </ul>
-            <p className="premium-price">$2.99</p>
-            <button className="btn btn-primary" onClick={() => window.open('https://buy.stripe.com/4gM8wIfh94I42yl5Xh7Re08', '_blank')}>
+            <p className="premium-price">$3</p>
+            <button className="btn btn-primary" onClick={() => window.open('__NEW_PAYMENT_LINK_CARDS_3__', '_blank')}>
               Unlock Now
             </button>
           </div>
