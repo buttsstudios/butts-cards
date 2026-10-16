@@ -102,7 +102,7 @@ export default function CardBattle() {
 
   const newGame = () => {
     if (!canPlay()) {
-      setPaywallMessage('Daily limit reached! Come back tomorrow for more free games.');
+      setPaywallMessage('Daily limit reached. Come back tomorrow, or unlock the full game.');
       setShowPaywallModal(true);
       return;
     }
@@ -197,7 +197,7 @@ export default function CardBattle() {
   const handleNewGame = () => {
     const remaining = getDailyTries();
     if (remaining <= 0) {
-      setPaywallMessage('Daily limit reached! Come back tomorrow for more free games.');
+      setPaywallMessage('Daily limit reached. Come back tomorrow, or unlock the full game.');
       setShowPaywallModal(true);
       return;
     }
@@ -275,7 +275,7 @@ export default function CardBattle() {
             {opponentPlayed ? (
               <div className="card">
                 <div className="card-value">{opponentPlayed.value}</div>
-                <div className="card-suit" style={{ color: opponentPlayed.suit === '♥' || opponentPlayed.suit === '♦' ? '#E91E63' : '#fff' }}>{opponentPlayed.suit}</div>
+                <div className="card-suit" style={{ color: opponentPlayed.suit === '♥' || opponentPlayed.suit === '♦' ? '#E2553A' : '#fff' }}>{opponentPlayed.suit}</div>
               </div>
             ) : 'Opponent'}
           </div>
@@ -283,7 +283,7 @@ export default function CardBattle() {
             {playerPlayed ? (
               <div className="card">
                 <div className="card-value">{playerPlayed.value}</div>
-                <div className="card-suit" style={{ color: playerPlayed.suit === '♥' || playerPlayed.suit === '♦' ? '#E91E63' : '#fff' }}>{playerPlayed.suit}</div>
+                <div className="card-suit" style={{ color: playerPlayed.suit === '♥' || playerPlayed.suit === '♦' ? '#E2553A' : '#fff' }}>{playerPlayed.suit}</div>
               </div>
             ) : 'You'}
           </div>
@@ -297,7 +297,7 @@ export default function CardBattle() {
               onClick={() => selectCard(i)}
             >
               <div className="card-value">{card.value}</div>
-              <div className="card-suit" style={{ color: card.suit === '♥' || card.suit === '♦' ? '#E91E63' : '#fff' }}>{card.suit}</div>
+              <div className="card-suit" style={{ color: card.suit === '♥' || card.suit === '♦' ? '#E2553A' : '#fff' }}>{card.suit}</div>
             </div>
           ))}
         </div>
