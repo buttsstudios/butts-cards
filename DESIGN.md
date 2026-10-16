@@ -104,6 +104,15 @@ Card widths derive from the viewport so six cards fit in one row at 360 px; tabl
 Firebase is now a dynamic import, loaded only when Top scores is shown or a score is posted, so the game shell paints
 without Firestore. Sounds are synthesized; card backs are CSS gradients.
 
+### Visual design (Principal 2026-10-16: "make them look sleek and up to our design standards")
+The game now speaks the buttsstudios.com editorial language instead of a generic dark game template: tracked
+uppercase eyebrows, Archivo 800 display type with the games-green accent period, Newsreader for ledes, coach lines and
+match commentary, numbered hairline plates for the three opponents, the rival ladder as numbered slate rows, a
+hairline stats strip, flat ink surfaces (no glows, gradients or drop shadows). Cards are typographic bone faces with a
+thin inner frame; the prize is an ink card with a gold frame. The HUD is a hairline bar with SVG icons and segmented
+round pips. The end screen is an editorial title ("You win.") over a round-by-round table. The games hub
+(`games/portal`, same branch name) was restyled to the same standard.
+
 ## 3. Kept intact
 - `/api/verify-purchase` and the `session_id` flow from `fix/verify-purchase-2026-10-15`: premium unlocks only after a
   server-verified paid session. No URL flag.
@@ -111,7 +120,13 @@ without Firestore. Sounds are synthesized; card backs are CSS gradients.
   substitutes it).
 - The shared Studios bar and footer (`studios-section.css`, games accent), radius <= 4px, full borders only, no pills.
 
-## 4. Not done / next
+## 4. Evidence
+Headless Playwright playtests on xps (desktop 1280 and mobile 390, touch): `~/buttsstudios/staged/games_next_level/cards/`
+(`before-live/` = cards.buttsstudios.com today, `after/` = this branch, with `*-play.gif` recordings) and
+`~/buttsstudios/staged/games_next_level/hub/`. The after run reports no page errors. Production build: 95 kB first-load JS
+for `/` with Firebase split out. Script: `scripts/playtest.cjs`.
+
+## 5. Not done / next
 - Progress lives in this browser (stated in the Premium modal). Cross-device sync would need accounts.
 - Daily Deal scores are local; a per-day board would need a Firestore collection and rules.
 - Card art is typographic. A commissioned face set would lift it further.

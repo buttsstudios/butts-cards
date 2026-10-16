@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./studios-section.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Card Battle - Strategic Card Game",
-  description: "A strategic card game - beat your opponent with higher cards",
+  description: "Six cards each, six prizes on the table. You both choose at once; the higher card takes the points.",
   metadataBase: new URL("https://cards.buttsstudios.com"),
   openGraph: {
     type: "website",
     url: "https://cards.buttsstudios.com",
     title: "Card Battle - Strategic Card Game",
-    description: "A strategic card game - beat your opponent with higher cards",
+    description: "Six cards each, six prizes on the table. You both choose at once; the higher card takes the points.",
     images: [
       {
         url: "/og-image.png",
@@ -27,12 +27,12 @@ export const metadata: Metadata = {
     site: "@buttsstudios",
     creator: "@buttsstudios",
     title: "Card Battle - Strategic Card Game",
-    description: "A strategic card game - beat your opponent with higher cards",
+    description: "Six cards each, six prizes on the table. You both choose at once; the higher card takes the points.",
     images: ["/og-image.png"],
   },
-  themeColor: "#050707",
-  viewport: "width=device-width, initial-scale=1",
 };
+
+export const viewport: Viewport = { themeColor: "#050707", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({
   children,

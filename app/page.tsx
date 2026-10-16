@@ -511,10 +511,11 @@ export default function CardBattle() {
             <h2 id="over-title" className="over-title">{result === 'win' ? 'You win' : result === 'loss' ? `${oppName(mode)} wins` : 'Draw'}<span className="accent">.</span></h2>
             <p className="final"><b>{pScore}</b><span>to</span><b>{oScore}</b></p>
             <ol className="recap" aria-label="Round by round">
+              <li className="head" aria-hidden="true"><span>Prize</span><span>You</span><span>{oppName(mode)}</span><span className="ro">Pts</span></li>
               {log.map((r, i) => (
                 <li key={i} className={r.outcome === 'player' ? 'w' : r.outcome === 'opp' ? 'l' : 't'}>
                   <span className="rp">{r.prize.value}{r.prize.suit}</span>
-                  <span>You {RANK_LABEL[r.p.rank]}{r.p.suit} <small>{r.pp}</small></span>
+                  <span>{RANK_LABEL[r.p.rank]}{r.p.suit} <small>{r.pp}</small></span>
                   <span>{RANK_LABEL[r.o.rank]}{r.o.suit} <small>{r.op}</small></span>
                   <span className="ro">{r.outcome === 'player' ? `+${r.stake}` : r.outcome === 'opp' ? `−${r.stake}` : 'pot'}</span>
                 </li>

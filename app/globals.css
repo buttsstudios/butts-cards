@@ -69,8 +69,8 @@ button, .card { touch-action: manipulation; -webkit-tap-highlight-color: transpa
 .hero-cards { position: relative; height: clamp(180px, 22vw, 260px); }
 .hero-cards .hc { position: absolute; top: 50%; left: 50%; }
 .hero-cards .card { --cw: clamp(96px, 12vw, 138px); }
-.hc1 { transform: translate(-112%, -50%) rotate(-7deg); }
-.hc3 { transform: translate(12%, -50%) rotate(6deg); }
+.hc1 { transform: translate(-138%, -50%) rotate(-7deg); }
+.hc3 { transform: translate(38%, -50%) rotate(6deg); }
 .hero-cards .prize { --tw: clamp(100px, 12vw, 140px); transform: translate(-50%, -58%); z-index: 2; animation: none; }
 .hero-meta { display: flex; gap: 10px 32px; flex-wrap: wrap; margin-top: 36px; font-size: 14px; color: var(--bs-muted); }
 .hero-meta strong { color: var(--bs-bone); font-weight: 700; margin-right: 4px; }
@@ -130,13 +130,13 @@ button, .card { touch-action: manipulation; -webkit-tap-highlight-color: transpa
 .title-foot { display: flex; gap: 10px; align-items: center; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line); flex-wrap: wrap; }
 
 /* ---------- card backs (earned on the ladder) ---------- */
-.back-plain, .card.back-plain { background: var(--bs-ink-3) linear-gradient(45deg, transparent 47%, var(--bs-accent) 47% 53%, transparent 53%), linear-gradient(-45deg, transparent 47%, var(--bs-accent) 47% 53%, transparent 53%); }
-.back-grid, .card.back-grid { background: #13201A repeating-linear-gradient(0deg, transparent 0 7px, rgba(123,196,127,.5) 7px 8px), repeating-linear-gradient(90deg, transparent 0 7px, rgba(123,196,127,.5) 7px 8px); }
+.back-plain, .card.back-plain { background: linear-gradient(45deg, transparent 47%, var(--bs-accent) 47% 53%, transparent 53%), linear-gradient(-45deg, transparent 47%, var(--bs-accent) 47% 53%, transparent 53%), var(--bs-ink-3); }
+.back-grid, .card.back-grid { background: repeating-linear-gradient(0deg, transparent 0 7px, rgba(123,196,127,.5) 7px 8px), repeating-linear-gradient(90deg, transparent 0 7px, rgba(123,196,127,.5) 7px 8px), #13201A; }
 .back-stripe, .card.back-stripe { background: repeating-linear-gradient(45deg, #E2553A 0 6px, #2B1410 6px 12px); }
-.back-dots, .card.back-dots { background: #1A1F2E radial-gradient(circle, #9DB4E8 1.6px, transparent 2px) 0 0 / 9px 9px; }
-.back-chevron, .card.back-chevron { background: #241A2C linear-gradient(135deg, #B48AD0 25%, transparent 25%) -6px 0 / 12px 12px, linear-gradient(225deg, #B48AD0 25%, transparent 25%) -6px 0 / 12px 12px; }
-.back-cross, .card.back-cross { background: #2A2416 linear-gradient(90deg, transparent 42%, #C9B98F 42% 58%, transparent 58%) 0 0 / 12px 12px, linear-gradient(0deg, transparent 42%, #C9B98F 42% 58%, transparent 58%) 0 0 / 12px 12px; }
-.back-gold, .card.back-gold { background: var(--bs-gold) repeating-linear-gradient(-45deg, transparent 0 5px, rgba(5,7,7,.25) 5px 7px); }
+.back-dots, .card.back-dots { background: radial-gradient(circle, #9DB4E8 1.6px, transparent 2px) 0 0 / 9px 9px, #1A1F2E; }
+.back-chevron, .card.back-chevron { background: linear-gradient(135deg, #B48AD0 25%, transparent 25%) -6px 0 / 12px 12px, linear-gradient(225deg, #B48AD0 25%, transparent 25%) -6px 0 / 12px 12px, #241A2C; }
+.back-cross, .card.back-cross { background: linear-gradient(90deg, transparent 42%, #C9B98F 42% 58%, transparent 58%) 0 0 / 12px 12px, linear-gradient(0deg, transparent 42%, #C9B98F 42% 58%, transparent 58%) 0 0 / 12px 12px, #2A2416; }
+.back-gold, .card.back-gold { background: repeating-linear-gradient(-45deg, transparent 0 5px, rgba(5,7,7,.25) 5px 7px), var(--bs-gold); }
 
 /* ---------- cards: typographic faces with an inner frame ---------- */
 .card {
@@ -260,6 +260,8 @@ button.card:disabled { cursor: default; }
 .final span { color: var(--bs-muted); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; }
 .recap { list-style: none; font-size: 14px; border-top: 1px solid var(--line); }
 .recap li { display: grid; grid-template-columns: 40px 1fr 1fr 44px; gap: 6px; padding: 9px 0; border-bottom: 1px solid var(--line); align-items: center; font-variant-numeric: tabular-nums; }
+.recap li.head { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--bs-muted); padding: 8px 0; }
+.recap li.head span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .recap small { color: var(--bs-muted); margin-left: 2px; }
 .recap .rp { color: var(--bs-gold); font-weight: 800; }
 .recap .ro { text-align: right; font-weight: 800; }

@@ -16,7 +16,7 @@ async function run(label, viewport, opts = {}) {
   page.on('console', (m) => { if (m.type() === 'error') errors.push(`${label} console: ${m.text()}`); });
   const shot = async (n) => { await page.screenshot({ path: `${out}/${which}-${label}-${n}.png` }); console.log('shot', label, n); };
   const t0 = Date.now();
-  await page.goto(base, { waitUntil: 'networkidle' });
+  await page.goto(base, { waitUntil: 'load' });
   console.log(label, 'load ms', Date.now() - t0);
   if (which === 'before') {
     await shot('01-login');
@@ -46,18 +46,18 @@ async function run(label, viewport, opts = {}) {
       await sleep(1200);
     }
     await sleep(900); await shot('06-over');
-    await page.getByRole('button', { name: 'Menu' }).click(); await sleep(700);
+    await page.getByRole('button', { name: 'Menu', exact: true }).click(); await sleep(700);
     await page.evaluate(() => window.scrollTo(0, 99999)); await sleep(400); await shot('07-menu-record');
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.getByRole('button', { name: /Premium · \$3/ }).click(); await sleep(500); await shot('08-premium');
     await page.keyboard.press('Escape'); await page.mouse.click(5, 5); await sleep(300);
     // keyboard-only round on Sharp
-    await page.getByRole('button', { name: /^Sharp/ }).click(); await sleep(700);
+    await page.locator('.plate', { hasText: 'Sharp' }).click(); await sleep(700);
     await page.keyboard.press('3'); await sleep(150); await page.keyboard.press('Enter'); await sleep(1100);
     await shot('09-keyboard-round');
     // rival 1 (house rules strip)
     await page.getByRole('button', { name: 'Back to menu' }).click(); await sleep(500);
-    await page.getByRole('button', { name: /1\. Dot/ }).click(); await sleep(700); await shot('10-rival');
+    await page.locator('.title-row', { hasText: 'Dot' }).click(); await sleep(700); await shot('10-rival');
   }
   await ctx.close(); await browser.close();
 }
