@@ -293,71 +293,79 @@ export default function CardBattle() {
 
   // ================= TITLE =================
   if (screen === 'title') {
+    const lv = (id: Level) => LEVELS.find((l) => l.id === id)!;
     return (
       <main className="cb title-screen">
         <section className="hero">
-          <div className="hero-cards" aria-hidden="true">
-            <span className="card hc hc1"><span className="face red"><span className="idx">K<br />♥</span><span className="pip">♥</span></span></span>
-            <span className="hc hc2 prize"><span className="prize-label">Prize</span><span className="prize-value">5</span><span className="prize-suit">♠</span></span>
-            <span className="card hc hc3"><span className="face"><span className="idx">Q<br />♠</span><span className="pip">♠</span></span></span>
+          <p className="eyebrow">Butts Studios · Games · 02</p>
+          <div className="hero-grid">
+            <div>
+              <h1 className="display">Card Battle<span className="accent">.</span></h1>
+              <p className="lede">Six cards each, six prizes on the table. You both choose at once; the higher card takes the points.</p>
+              <div className="hero-actions">
+                <button className="btn btn-primary btn-big" onClick={() => startMatch({ kind: 'quick', level: defaultLevel })}>
+                  {firstMatch ? 'Play the first match' : `Play ${lv(defaultLevel).name}`}
+                </button>
+                <button className="btn btn-secondary btn-big" onClick={() => setShowHelp(true)}>Rules</button>
+              </div>
+              <p className="meta">{firstMatch ? 'The first match is guided and does not use a daily play.' : triesLabel}</p>
+            </div>
+            <div className="hero-cards" aria-hidden="true">
+              <span className="card hc hc1"><CardFace card={{ id: 'h1', rank: 13, suit: '♥' }} /></span>
+              <span className="hc hc2 prize"><span className="prize-label">Prize</span><span className="prize-value">5</span><span className="prize-suit">♠</span></span>
+              <span className="card hc hc3"><CardFace card={{ id: 'h3', rank: 12, suit: '♠' }} /></span>
+            </div>
           </div>
-          <h1>Card Battle</h1>
-          <p className="lede">Six cards each. Six prizes. You both choose at once.</p>
-          <div className="hero-actions">
-            <button className="btn btn-primary btn-big" onClick={() => startMatch({ kind: 'quick', level: defaultLevel })}>
-              {firstMatch ? 'Play the first match' : `Play ${LEVELS.find((l) => l.id === defaultLevel)!.name}`}
-            </button>
-            <button className="btn btn-secondary btn-big" onClick={() => setShowHelp(true)}>Rules</button>
-          </div>
-          <p className="meta">{firstMatch ? 'The first match is guided and does not use a daily play.' : triesLabel}</p>
+          <div className="hero-meta"><span><strong>6</strong> rounds</span><span><strong>~1 min</strong> a match</span><span><strong>3</strong> opponents</span><span><strong>6</strong> rivals</span></div>
         </section>
 
-        <section className="panel">
-          <h2>Quick match</h2>
-          <div className="levels">
-            {LEVELS.map((l) => {
+        <section className="sec">
+          <div className="sec-head"><h2>Quick match</h2><p>Pick an opponent. Harder opponents multiply your score.</p></div>
+          <div className="plates">
+            {LEVELS.map((l, i) => {
               const locked = l.id === 'master' && !premium;
               const rec = prog?.byLevel[l.id];
               return (
-                <button key={l.id} className={`level ${locked ? 'locked' : ''}`}
+                <button key={l.id} className={`plate ${locked ? 'locked' : ''}`}
                   onClick={() => (locked ? setShowUpgrade(true) : startMatch({ kind: 'quick', level: l.id }))}>
-                  <strong>{l.name}{locked ? <span className="lock">Premium</span> : null}</strong>
-                  <span>{l.blurb}</span>
-                  <small>{rec ? `${rec.wins} won of ${rec.played}` : 'Not played yet'} · score ×{l.mult}</small>
+                  <span className="plate-no">0{i + 1}{locked ? <span className="lock">Premium</span> : null}</span>
+                  <span className="plate-name">{l.name}</span>
+                  <span className="plate-kind">{l.blurb}</span>
+                  <span className="plate-foot"><span>{rec ? `${rec.wins} of ${rec.played} won` : 'Not played'}</span><span>Score ×{l.mult}</span></span>
                 </button>
               );
             })}
           </div>
         </section>
 
-        <section className="panel">
-          <h2>Daily Deal</h2>
-          <p className="sub">The same deal for every player today, against the Sharp opponent.</p>
-          <div className="panel-row">
-            <button className="btn btn-secondary" onClick={() => startMatch({ kind: 'daily' })}>
-              {prog?.dailyDone === today() ? 'Play today’s deal again' : 'Play today’s deal'}
+        <section className="sec">
+          <div className="sec-head"><h2>Daily Deal</h2><p>One seeded deal for every player today, against Sharp.</p></div>
+          <div className="daily">
+            <span className="daily-date">{today()}</span>
+            <span className="daily-best">{prog?.dailyBest ? <>Your best <b>{prog.dailyBest}</b></> : 'Not played yet'}</span>
+            <button className="btn btn-secondary btn-big" onClick={() => startMatch({ kind: 'daily' })}>
+              {prog?.dailyDone === today() ? 'Play it again' : 'Play today’s deal'}
             </button>
-            {prog?.dailyBest ? <span className="meta">Your best: {pts(prog.dailyBest)}</span> : null}
           </div>
         </section>
 
-        <section className="panel">
-          <h2>Rival ladder {premium ? null : <span className="lock">Premium after rival 1</span>}</h2>
-          <p className="sub">Six rivals, each with a house rule. Beat one to face the next and earn their card back.</p>
-          <ol className="ladder">
+        <section className="sec">
+          <div className="sec-head"><h2>Rival ladder</h2><p>Six rivals, one house rule each. Beat one to face the next and take their card back.{premium ? '' : ' Rival 1 is open to everyone; the rest come with Premium.'}</p></div>
+          <ol className="slate">
             {RIVALS.map((r, i) => {
               const beaten = !!prog?.ladderBeaten.includes(r.id);
               const reached = i <= (prog?.ladder ?? 0);
               const open = reached && (premium || i === 0);
               return (
                 <li key={r.id}>
-                  <button className={`rival ${beaten ? 'beaten' : ''} ${open ? '' : 'locked'}`}
+                  <button className={`title-row ${beaten ? 'beaten' : ''} ${open ? '' : 'locked'}`}
                     onClick={() => (open ? startMatch({ kind: 'rival', index: i }) : !premium ? setShowUpgrade(true) : setToast(`Beat ${RIVALS[i - 1].name} first.`))}>
-                    <span className={`back-swatch back-${r.back}`} aria-hidden="true" />
-                    <span className="rv">
-                      <strong>{i + 1}. {r.name}</strong>
-                      <span><b>{r.ruleName}.</b> {r.ruleText}</span>
-                      <small>{LEVELS.find((l) => l.id === r.level)!.name} AI{beaten ? ' · beaten' : !open ? ' · locked' : ''}</small>
+                    <span className="no">0{i + 1}</span>
+                    <span className="tr-name"><strong>{r.name}</strong><span className="kind">{r.ruleName} · {lv(r.level).name}</span></span>
+                    <span className="logline">{r.ruleText}</span>
+                    <span className="tr-state">
+                      <span className={`back-swatch back-${r.back}`} aria-hidden="true" />
+                      <span>{beaten ? 'Beaten' : open ? 'Play' : !premium && i > 0 ? 'Premium' : 'Locked'}</span>
                     </span>
                   </button>
                 </li>
@@ -367,16 +375,16 @@ export default function CardBattle() {
         </section>
 
         {prog && prog.played > 0 && (
-          <section className="panel">
-            <h2>Your record</h2>
+          <section className="sec">
+            <div className="sec-head"><h2>Your record</h2><p>Kept in this browser.</p></div>
             <div className="stats-grid">
-              <div><b>{prog.played}</b><span>matches</span></div>
-              <div><b>{winRate}%</b><span>won</span></div>
-              <div><b>{prog.streak}</b><span>streak</span></div>
-              <div><b>{prog.bestStreak}</b><span>best streak</span></div>
-              <div><b>{prog.bestScore}</b><span>best score</span></div>
+              <div><b>{prog.played}</b><span>Matches</span></div>
+              <div><b>{winRate}%</b><span>Won</span></div>
+              <div><b>{prog.streak}</b><span>Streak</span></div>
+              <div><b>{prog.bestStreak}</b><span>Best streak</span></div>
+              <div><b>{prog.bestScore}</b><span>Best score</span></div>
             </div>
-            <h3>Card back</h3>
+            <h3 className="sub-h">Card back</h3>
             <div className="backs">
               {BACKS.map((b) => {
                 const earned = b.id === 'plain' || prog.ladderBeaten.some((id) => RIVALS.find((r) => r.id === id)?.back === b.id);
@@ -391,19 +399,18 @@ export default function CardBattle() {
           </section>
         )}
 
-        <section className="panel">
-          <h2>Top scores</h2>
-          <p className="sub">Score is points won × opponent level, posted by players who chose to share a win.</p>
+        <section className="sec">
+          <div className="sec-head"><h2>Top scores</h2><p>Points won × opponent level, posted by players who chose to share a win.</p></div>
           {leaderboard === null ? <p className="meta">Loading…</p> : leaderboard === 'error' ? <p className="meta">Top scores are unavailable right now.</p> : leaderboard.length === 0 ? <p className="meta">No scores posted yet.</p> : (
             <ol className="board">
-              {leaderboard.map((e, i) => (<li key={e.id}><span>{i + 1}. {e.playerName}</span><b>{e.score}</b></li>))}
+              {leaderboard.map((e, i) => (<li key={e.id}><span className="no">{String(i + 1).padStart(2, '0')}</span><span>{e.playerName}</span><b>{e.score}</b></li>))}
             </ol>
           )}
         </section>
 
         <div className="title-foot">
-          {!premium ? <button className="btn btn-premium" onClick={() => setShowUpgrade(true)}>Premium · $3 once</button> : <span className="premium-badge">Premium</span>}
-          <button className="btn btn-secondary btn-small" onClick={toggleMute} aria-pressed={muted}>{muted ? 'Sound off' : 'Sound on'}</button>
+          {!premium ? <button className="btn btn-premium btn-big" onClick={() => setShowUpgrade(true)}>Premium · $3 one-time</button> : <span className="premium-badge">Premium</span>}
+          <button className="btn btn-secondary btn-big" onClick={toggleMute} aria-pressed={muted}>{muted ? 'Sound off' : 'Sound on'}</button>
         </div>
         {modals()}
       </main>
@@ -417,7 +424,7 @@ export default function CardBattle() {
   return (
     <main className={`cb game ${phase}`}>
       <div className="hud">
-        <button className="icon-btn" onClick={() => { clearTimers(); setScreen('title'); }} aria-label="Back to menu">←</button>
+        <button className="icon-btn" onClick={() => { clearTimers(); setScreen('title'); }} aria-label="Back to menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
         <div className={`score opp ${bump === 'o' ? 'bump' : ''}`}><span>{oppName(mode)}</span><b>{oScore}</b></div>
         <div className="rounds" aria-label={`Round ${Math.min(roundIndex + 1, HAND_SIZE)} of ${HAND_SIZE}`}>
           {Array.from({ length: HAND_SIZE }).map((_, i) => {
@@ -426,7 +433,9 @@ export default function CardBattle() {
           })}
         </div>
         <div className={`score you ${bump === 'p' ? 'bump' : ''}`}><span>You</span><b>{pScore}</b></div>
-        <button className="icon-btn" onClick={toggleMute} aria-label={muted ? 'Turn sound on' : 'Turn sound off'} aria-pressed={muted}>{muted ? 'Off' : 'Snd'}</button>
+        <button className="icon-btn" onClick={toggleMute} aria-label={muted ? 'Turn sound on' : 'Turn sound off'} aria-pressed={muted}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" />{muted ? <path d="M17 9l5 6M22 9l-5 6" /> : <path d="M17 8.5a5 5 0 0 1 0 7M19.5 6a8.5 8.5 0 0 1 0 12" />}</svg>
+        </button>
         <button className="icon-btn" onClick={() => setShowHelp(true)} aria-label="Rules">?</button>
       </div>
 
@@ -498,7 +507,8 @@ export default function CardBattle() {
       {phase === 'over' && (
         <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="over-title">
           <div className={`modal over ${result}`}>
-            <h2 id="over-title">{result === 'win' ? 'You win' : result === 'loss' ? `${oppName(mode)} wins` : 'Draw'}</h2>
+            <p className="eyebrow">Match over · {oppName(mode)}{mode.kind === 'rival' ? ` · ${RIVALS[mode.index].ruleName}` : ''}</p>
+            <h2 id="over-title" className="over-title">{result === 'win' ? 'You win' : result === 'loss' ? `${oppName(mode)} wins` : 'Draw'}<span className="accent">.</span></h2>
             <p className="final"><b>{pScore}</b><span>to</span><b>{oScore}</b></p>
             <ol className="recap" aria-label="Round by round">
               {log.map((r, i) => (
