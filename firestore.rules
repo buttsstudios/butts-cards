@@ -1,0 +1,37 @@
+rules_version = '2';
+// Firestore rules for Firebase project butts-studios (shared by Card Battle, Puzzle and the legacy games/).
+// Deploying replaces the WHOLE project ruleset, so every block below must stay. The four legacy blocks are the live
+// ruleset e574af77 (deployed 2026-04-04), copied verbatim. Only the `scores` block is new (2026-10-16): Card Battle
+// (apps/butts-cards-next, lib/firebase.ts) reads and writes `scores`, which had no rule, so the live leaderboard
+// read failed with "Missing or insufficient permissions" and every score post was refused.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Card Battle top scores: public read; append-only posts of {playerName, score, timestamp}; no edits or deletes.
+    match /scores/{scoreId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['playerName', 'score', 'timestamp'])
+        && request.resource.data.playerName is string
+        && request.resource.data.playerName.size() > 0
+        && request.resource.data.playerName.size() <= 24
+        && request.resource.data.score is int
+        && request.resource.data.score >= 0
+        && request.resource.data.score <= 1000
+        && request.resource.data.timestamp is string;
+      allow update, delete: if false;
+    }
+    match /puzzle_scores/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /card_scores/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /users/{userId}/{document=**} {
+      allow read, write: if true;
+    }
+    match /analytics/{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
