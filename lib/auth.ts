@@ -5,7 +5,7 @@ const STORAGE_KEYS = {
   PLAYER_NAME: 'butts_cards_player_name',
 };
 
-const FREE_DAILY_TRIES = 5;
+export const DAILY_PLAYS = 5;
 
 function getTodayDate(): string {
   return new Date().toISOString().split('T')[0];
@@ -32,18 +32,18 @@ export function setPremium(value: boolean): void {
 }
 
 export function getDailyTries(): number {
-  if (typeof window === 'undefined') return FREE_DAILY_TRIES;
+  if (typeof window === 'undefined') return DAILY_PLAYS;
   
   const lastPlayedDate = localStorage.getItem(STORAGE_KEYS.LAST_PLAYED_DATE);
   const today = getTodayDate();
   
   if (lastPlayedDate !== today) {
-    localStorage.setItem(STORAGE_KEYS.DAILY_TRIES, String(FREE_DAILY_TRIES));
+    localStorage.setItem(STORAGE_KEYS.DAILY_TRIES, String(DAILY_PLAYS));
     localStorage.setItem(STORAGE_KEYS.LAST_PLAYED_DATE, today);
-    return FREE_DAILY_TRIES;
+    return DAILY_PLAYS;
   }
   
-  return parseInt(localStorage.getItem(STORAGE_KEYS.DAILY_TRIES) || String(FREE_DAILY_TRIES), 10);
+  return parseInt(localStorage.getItem(STORAGE_KEYS.DAILY_TRIES) || String(DAILY_PLAYS), 10);
 }
 
 export function decrementTries(): number {
@@ -58,7 +58,7 @@ export function decrementTries(): number {
 }
 
 export function canPlay(): boolean {
-  return getDailyTries() > 0;
+  return isPremium() || getDailyTries() > 0;
 }
 
 export function isLoggedIn(): boolean {

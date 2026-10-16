@@ -39,7 +39,7 @@ export async function getLeaderboard(limitCount = 10) {
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
-    console.error("Error getting leaderboard:", error);
-    return [];
+    console.warn("Leaderboard unavailable:", error);
+    return null; // caller shows "unavailable" rather than an empty board
   }
 }
