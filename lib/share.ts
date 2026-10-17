@@ -134,7 +134,7 @@ function legacyCopy(text: string): boolean {
 }
 
 const CSS =
-  ".shr{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px;max-width:100%;min-width:0}" +
+  ".shr{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:inherit;gap:6px;max-width:100%;min-width:0}" +
   ".shr.shr-open{flex-basis:100%}" +
   ".shr .shr-btn,.shr .shr-item{font:inherit;font-size:13px;line-height:1.2;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;" +
   "min-height:36px;padding:7px 12px;border:1px solid var(--shr-line);border-radius:3px;background:var(--shr-panel);color:var(--shr-ink);text-decoration:none;white-space:nowrap}" +
