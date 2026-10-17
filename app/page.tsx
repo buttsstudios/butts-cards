@@ -17,7 +17,7 @@ import {
 } from '@/lib/engine';
 import { sfx, buzz, initSfx, isMuted, setMuted } from '@/lib/sfx';
 import { Progress, loadProgress, saveProgress, recordMatch, BACKS } from '@/lib/progress';
-import HowToPlay from './how-to-play';
+import { HowToButton, HowToPanel, useHowto } from './how-to-play';
 import ShareButton from './share-button';
 import { marksGrid } from '@/lib/share';
 
@@ -72,7 +72,7 @@ export default function CardBattle() {
 
   // --- screens / modals ---
   const [screen, setScreen] = useState<'title' | 'game'>('title');
-  const [showHelp, setShowHelp] = useState(false);
+  const howto = useHowto();
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
   const [leaderboard, setLeaderboard] = useState<Score[] | null | 'error'>(null);
@@ -265,10 +265,10 @@ export default function CardBattle() {
   // ---------- keyboard ----------
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') { setShowHelp(false); setShowUpgrade(false); setShowPaywall(false); return; }
+      if (e.key === 'Escape') { setShowUpgrade(false); setShowPaywall(false); return; }
       if ((e.target as HTMLElement)?.tagName === 'INPUT') return;
       if (e.key === 'm' || e.key === 'M') { const m = !isMuted(); setMuted(m); setMutedState(m); return; }
-      if (screen !== 'game' || showHelp || showUpgrade || showPaywall) return;
+      if (screen !== 'game' || howto.open || showUpgrade || showPaywall) return;
       if (phase === 'choose') {
         const n = parseInt(e.key, 10);
         if (n >= 1 && n <= pHand.length) { e.preventDefault(); select(n - 1); return; }
@@ -320,7 +320,7 @@ export default function CardBattle() {
                 <button className="btn btn-primary btn-big" onClick={() => startMatch({ kind: 'quick', level: defaultLevel })}>
                   {firstMatch ? 'Play the first match' : `Play ${lv(defaultLevel).name}`}
                 </button>
-                <button className="btn btn-secondary btn-big" onClick={() => setShowHelp(true)}>How to play</button>
+                <HowToButton howto={howto} className="btn btn-secondary btn-big" />
               </div>
               <p className="meta">{firstMatch ? 'The first match is guided and does not use a daily play.' : triesLabel}</p>
             </div>
@@ -330,12 +330,8 @@ export default function CardBattle() {
               <span className="card hc hc3"><CardFace card={{ id: 'h3', rank: 12, suit: '♠' }} /></span>
             </div>
           </div>
+          <HowToPanel howto={howto} about />
           <div className="hero-meta"><span><strong>6</strong> rounds</span><span><strong>~1 min</strong> a match</span><span><strong>3</strong> opponents</span><span><strong>6</strong> rivals</span></div>
-        </section>
-
-        <section className="sec" id="how-to-play" aria-labelledby="htp-title">
-          <div className="sec-head"><h2 id="htp-title">How to play</h2><p>The basics in one place. The ? button during a match opens this again.</p></div>
-          <HowToPlay about />
         </section>
 
         <section className="sec">
@@ -442,6 +438,13 @@ export default function CardBattle() {
   const lowClubs = rules.lowWinsClubs && prize?.suit === '♣';
   return (
     <main className={`cb game ${phase}`}>
+      <div className="game-bar">
+        <span className="game-name">Card Battle<span className="accent">.</span></span>
+        <HowToButton howto={howto} className="btn btn-secondary btn-small" />
+      </div>
+      <HowToPanel howto={howto}>
+        {mode.kind === 'rival' && <p className="meta">This match: <b>{RIVALS[mode.index].ruleName}.</b> {RIVALS[mode.index].ruleText}</p>}
+      </HowToPanel>
       <div className="hud">
         <button className="icon-btn" onClick={() => { clearTimers(); setScreen('title'); }} aria-label="Back to menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
         <div className={`score opp ${bump === 'o' ? 'bump' : ''}`}><span>{oppName(mode)}</span><b>{oScore}</b></div>
@@ -455,7 +458,6 @@ export default function CardBattle() {
         <button className="icon-btn" onClick={toggleMute} aria-label={muted ? 'Turn sound on' : 'Turn sound off'} aria-pressed={muted}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" />{muted ? <path d="M17 9l5 6M22 9l-5 6" /> : <path d="M17 8.5a5 5 0 0 1 0 7M19.5 6a8.5 8.5 0 0 1 0 12" />}</svg>
         </button>
-        <button className="icon-btn" onClick={() => setShowHelp(true)} aria-label="How to play">?</button>
       </div>
 
       {mode.kind === 'rival' && <div className="rule-strip"><b>{RIVALS[mode.index].name} · {RIVALS[mode.index].ruleName}.</b> {RIVALS[mode.index].ruleText}</div>}
@@ -606,16 +608,6 @@ export default function CardBattle() {
               <button className="btn btn-premium btn-big" onClick={() => window.open('__NEW_PAYMENT_LINK_CARDS_3__', '_blank')}>
                 Unlock Premium
               </button>
-            </div>
-          </div>
-        )}
-        {showHelp && (
-          <div className="overlay" onClick={() => setShowHelp(false)}>
-            <div className="modal rules" role="dialog" aria-modal="true" aria-labelledby="rules-title" onClick={(e) => e.stopPropagation()}>
-              <h2 id="rules-title">How to play</h2>
-              <HowToPlay />
-              {mode.kind === 'rival' && screen === 'game' && <p className="meta">This match: <b>{RIVALS[mode.index].ruleName}.</b> {RIVALS[mode.index].ruleText}</p>}
-              <button className="btn btn-primary btn-big" onClick={() => setShowHelp(false)}>Got it</button>
             </div>
           </div>
         )}

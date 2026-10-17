@@ -323,5 +323,16 @@ button.card:disabled { cursor: default; }
 .howto .about { margin-top: 16px; border: 1px solid var(--line); border-radius: 2px; padding: 10px 14px; }
 .howto .about summary { cursor: pointer; font-family: var(--bs-display); font-weight: 600; font-size: 14px; color: var(--bs-bone); }
 .howto .about p { font-size: 15px; margin-top: 8px; }
-.modal.rules { max-height: none; }
-.modal.rules .howto p { font-size: 16px; }
+.htp { margin-top: 24px; border: 1px solid var(--line); border-radius: 2px; padding: 16px clamp(14px, 3vw, 22px); background: var(--bs-ink-2); }
+.htp[hidden] { display: none; }
+.htp:focus { outline: none; }
+.htp:focus-visible { outline: 2px solid var(--bs-bone); outline-offset: 2px; }
+.htp-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.htp-head h2 { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--bs-bone-2); }
+.htp .meta { margin-top: 14px; }
+.btn-secondary[aria-expanded="true"] { border-color: var(--bs-bone); }
+.game-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 12px; }
+.game-name { font-weight: 800; font-size: 20px; letter-spacing: -.02em; }
+.cb.game .htp { margin: 0 0 14px; }
+.hud { grid-template-columns: 40px 1fr auto 1fr 40px; }
+@media (max-width: 420px) { .hud { grid-template-columns: 36px 1fr auto 1fr 36px; } }
