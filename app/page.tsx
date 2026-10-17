@@ -18,6 +18,8 @@ import {
 import { sfx, buzz, initSfx, isMuted, setMuted } from '@/lib/sfx';
 import { Progress, loadProgress, saveProgress, recordMatch, BACKS } from '@/lib/progress';
 import HowToPlay from './how-to-play';
+import ShareButton from './share-button';
+import { marksGrid } from '@/lib/share';
 
 interface Score { id: string; playerName: string; score: number }
 
@@ -31,6 +33,7 @@ const rulesOf = (m: Mode): Rules => (m.kind === 'rival' ? RIVALS[m.index].rules 
 const oppName = (m: Mode) => (m.kind === 'rival' ? RIVALS[m.index].name : m.kind === 'daily' ? 'Daily Deal' : LEVELS.find((l) => l.id === m.level)!.name);
 const multOf = (l: Level) => LEVELS.find((x) => x.id === l)!.mult;
 const pts = (n: number) => `${n} ${n === 1 ? 'point' : 'points'}`;
+const SHARE_URL = 'https://cards.buttsstudios.com/';
 
 const COACH = [
   'The prize is in the middle. Pick a card: the higher power takes its points.',
@@ -290,6 +293,16 @@ export default function CardBattle() {
   const ladderNext = mode.kind === 'rival' && result === 'win' && mode.index + 1 < RIVALS.length ? mode.index + 1 : null;
   const triesLabel = premium ? 'Premium: no daily limit' : `${dailyTries} of ${DAILY_PLAYS} plays left today`;
   const firstMatch = !!prog && !prog.tutorialDone;
+  // The player's real result: final points, opponent, the UTC day (the Daily Deal is seeded by it), rounds won.
+  const shareSpec = () => {
+    const opp = mode.kind === 'daily' ? LEVELS.find((l) => l.id === 'sharp')!.name : oppName(mode);
+    const day = today();
+    const grid = marksGrid(log.map((r) => r.outcome === 'player'));
+    const text = mode.kind === 'daily'
+      ? `I ${result === 'win' ? 'won' : result === 'loss' ? 'lost' : 'drew'} today’s Card Battle Daily Deal ${pScore}–${oScore} against ${opp} (${day} UTC). Can you ${result === 'win' ? 'match it' : 'beat it'}?`
+      : `I beat ${opp} ${pScore}–${oScore} at Card Battle for a score of ${pScore * multOf(level)} (${day} UTC). Can you?`;
+    return { text: `${text}\n${grid}`, url: SHARE_URL, campaign: 'play' as const, title: 'Card Battle' };
+  };
   const defaultLevel: Level = firstMatch ? 'rookie' : mode.kind === 'quick' && (premium || mode.level !== 'master') ? mode.level : 'sharp';
 
   // ================= TITLE =================
@@ -551,13 +564,7 @@ export default function CardBattle() {
                 </button>
               )}
               <button className="btn btn-secondary btn-big" onClick={() => setScreen('title')}>Menu</button>
-              {result === 'win' && (
-                <button className="btn btn-secondary btn-big" onClick={() => {
-                  const text = `I beat ${oppName(mode)} ${pScore}–${oScore} at Card Battle. cards.buttsstudios.com`;
-                  if (navigator.share) navigator.share({ text }).catch(() => {});
-                  else navigator.clipboard?.writeText(text).then(() => setToast('Copied.')).catch(() => {});
-                }}>Share</button>
-              )}
+              {(result === 'win' || mode.kind === 'daily') && <ShareButton item="card-battle" spec={shareSpec()} />}
             </div>
             {ladderNext !== null && !premium && <p className="meta">The rest of the ladder comes with Premium. <button className="linkish" onClick={() => setShowUpgrade(true)}>See Premium</button></p>}
             <p className="meta">{triesLabel}</p>

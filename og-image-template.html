@@ -2,74 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Open Graph card, 1200x630. Rendered headless (Chromium screenshot, JPEG) to og-image.jpg.
+       Only facts from the page's own metadata are drawn: the name, one line, the address. No stats, no claims. -->
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      width: 1200px;
-      height: 630px;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 60px;
+      width: 1200px; height: 630px; position: relative; overflow: hidden; font-family: 'Archivo', sans-serif;
+      background-color: #070908;
+      background-image: linear-gradient(#141816 1px, transparent 1px), linear-gradient(90deg, #141816 1px, transparent 1px);
+      background-size: 40px 40px; color: #F1ECE2;
     }
-    .card {
-      width: 200px;
-      height: 280px;
-      background: linear-gradient(145deg, #2a2a4a 0%, #1a1a3a 100%);
-      border: 2px solid #9C27B0;
-      border-radius: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      margin-bottom: 40px;
-      box-shadow: 0 20px 60px rgba(156, 39, 176, 0.2);
-    }
-    .card-symbol {
-      font-size: 64px;
-      margin-bottom: 16px;
-    }
-    .card-title {
-      font-size: 14px;
-      color: #9C27B0;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    h1 {
-      font-size: 52px;
-      font-weight: 700;
-      color: white;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-    h1 em { color: #9C27B0; font-style: normal; }
-    p {
-      font-size: 20px;
-      color: #888;
-      text-align: center;
-    }
-    .badge {
-      position: absolute;
-      bottom: 40px;
-      right: 60px;
-      font-size: 14px;
-      color: #555;
-      font-family: 'Courier New', monospace;
-    }
+    .eyebrow { position: absolute; left: 72px; top: 96px; font-weight: 600; font-size: 20px; letter-spacing: .14em; color: #7BC47F; }
+    .name { position: absolute; left: 66px; top: 132px; font-weight: 800; font-size: 128px; letter-spacing: -.04em; line-height: 1; }
+    .name i { font-style: normal; color: #7BC47F; }
+    .line { position: absolute; left: 72px; top: 300px; font-size: 34px; color: #D9D3C7; max-width: 640px; line-height: 1.25; }
+    .foot { position: absolute; left: 72px; bottom: 64px; font-weight: 600; font-size: 20px; color: #9A948A; }
+    svg { position: absolute; right: 0; top: 0; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="card-symbol">🃏</div>
-    <div class="card-title">Butts Cards</div>
-  </div>
-  <h1>A Strategic <em>Card Game</em></h1>
-  <p>Collect, trade, and compete in multiplayer battles</p>
-  <div class="badge">cards.buttsstudios.com</div>
+  <svg width="1200" height="630" viewBox="0 0 1200 630">
+    <g transform="rotate(-8 820 385)"><rect x="760" y="300" width="120" height="170" rx="4" fill="#F1ECE2"/><text x="774" y="336" font-family="Archivo" font-weight="800" font-size="28" fill="#050707">K</text><text x="774" y="364" font-family="Archivo" font-size="24" fill="#050707">♠</text><text x="820" y="418" text-anchor="middle" font-family="Archivo" font-size="56" fill="#050707">♠</text></g><g transform="rotate(8 1060 385)"><rect x="1000" y="300" width="120" height="170" rx="4" fill="#F1ECE2"/><text x="1014" y="336" font-family="Archivo" font-weight="800" font-size="28" fill="#B23A22">Q</text><text x="1014" y="364" font-family="Archivo" font-size="24" fill="#B23A22">♥</text><text x="1060" y="418" text-anchor="middle" font-family="Archivo" font-size="56" fill="#B23A22">♥</text></g><g><rect x="880" y="120" width="120" height="170" rx="4" fill="#121110" stroke="#7BC47F" stroke-width="3"/><text x="940" y="200" text-anchor="middle" font-family="Archivo" font-weight="800" font-size="64" fill="#7BC47F">5</text><text x="940" y="245" text-anchor="middle" font-family="Archivo" font-size="30" fill="#7BC47F">♥</text></g>
+  </svg>
+  <div class="eyebrow">BUTTS STUDIOS · GAMES</div>
+  <div class="name">Card Battle<i>.</i></div>
+  <div class="line">Six cards each, six prizes on the table. The higher card takes the points.</div>
+  <div class="foot">A new Daily Deal every day · cards.buttsstudios.com</div>
 </body>
 </html>

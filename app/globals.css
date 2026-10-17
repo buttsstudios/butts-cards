@@ -273,6 +273,9 @@ button.card:disabled { cursor: default; }
 .post input { flex: 1; min-width: 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: 2px; background: var(--bg); color: var(--bs-bone); font: inherit; font-size: 16px; }
 .post input:focus { border-color: var(--bs-bone); outline: none; }
 .over-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+.modal .over-actions .shr { margin-top: 14px; }
+.over-actions .shr .shr-btn { min-height: 48px; padding: 0 18px; font-size: 15px; }
+.over-actions .shr .shr-menu .shr-item { font-size: 13px; }
 .premium-features { list-style: none; margin: 4px 0 4px; border-top: 1px solid var(--line); }
 .premium-features li { padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--bs-bone-2); font-size: 15px; line-height: 1.45; font-family: var(--bs-serif); }
 .premium-features b { font-family: var(--bs-display); color: var(--bs-bone); }
