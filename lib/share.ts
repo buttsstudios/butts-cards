@@ -53,7 +53,7 @@ export function utcDay(d?: Date): string {
   return (d || new Date()).toISOString().slice(0, 10);
 }
 
-/** Spoiler-free marks line, e.g. [true, true, false] -> "🟩🟩⬜". */
+/** Marks as a grid with no spoilers, e.g. [true, true, false] -> "🟩🟩⬜". */
 export function marksGrid(got: boolean[]): string {
   let s = "";
   for (let i = 0; i < got.length; i++) s += got[i] ? "\uD83D\uDFE9" : "\u2B1C";
