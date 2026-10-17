@@ -311,3 +311,14 @@ button.card:disabled { cursor: default; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
 }
+
+/* ---------- how to play (plain-language fundamentals, Principal 2026-10-17) ---------- */
+.howto { max-width: 68ch; }
+.howto h3, .howto h2 { font-family: var(--bs-display); font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--bs-accent); margin: 18px 0 6px; }
+.howto > h3:first-child, .howto > h2:first-child { margin-top: 0; }
+.howto p { font-family: var(--bs-serif); font-size: 17px; line-height: 1.55; color: var(--bs-bone-2); margin: 0 0 8px; }
+.howto .about { margin-top: 16px; border: 1px solid var(--line); border-radius: 2px; padding: 10px 14px; }
+.howto .about summary { cursor: pointer; font-family: var(--bs-display); font-weight: 600; font-size: 14px; color: var(--bs-bone); }
+.howto .about p { font-size: 15px; margin-top: 8px; }
+.modal.rules { max-height: none; }
+.modal.rules .howto p { font-size: 16px; }

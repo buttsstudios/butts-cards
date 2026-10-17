@@ -17,6 +17,7 @@ import {
 } from '@/lib/engine';
 import { sfx, buzz, initSfx, isMuted, setMuted } from '@/lib/sfx';
 import { Progress, loadProgress, saveProgress, recordMatch, BACKS } from '@/lib/progress';
+import HowToPlay from './how-to-play';
 
 interface Score { id: string; playerName: string; score: number }
 
@@ -306,7 +307,7 @@ export default function CardBattle() {
                 <button className="btn btn-primary btn-big" onClick={() => startMatch({ kind: 'quick', level: defaultLevel })}>
                   {firstMatch ? 'Play the first match' : `Play ${lv(defaultLevel).name}`}
                 </button>
-                <button className="btn btn-secondary btn-big" onClick={() => setShowHelp(true)}>Rules</button>
+                <button className="btn btn-secondary btn-big" onClick={() => setShowHelp(true)}>How to play</button>
               </div>
               <p className="meta">{firstMatch ? 'The first match is guided and does not use a daily play.' : triesLabel}</p>
             </div>
@@ -317,6 +318,11 @@ export default function CardBattle() {
             </div>
           </div>
           <div className="hero-meta"><span><strong>6</strong> rounds</span><span><strong>~1 min</strong> a match</span><span><strong>3</strong> opponents</span><span><strong>6</strong> rivals</span></div>
+        </section>
+
+        <section className="sec" id="how-to-play" aria-labelledby="htp-title">
+          <div className="sec-head"><h2 id="htp-title">How to play</h2><p>The basics in one place. The ? button during a match opens this again.</p></div>
+          <HowToPlay about />
         </section>
 
         <section className="sec">
@@ -436,7 +442,7 @@ export default function CardBattle() {
         <button className="icon-btn" onClick={toggleMute} aria-label={muted ? 'Turn sound on' : 'Turn sound off'} aria-pressed={muted}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" />{muted ? <path d="M17 9l5 6M22 9l-5 6" /> : <path d="M17 8.5a5 5 0 0 1 0 7M19.5 6a8.5 8.5 0 0 1 0 12" />}</svg>
         </button>
-        <button className="icon-btn" onClick={() => setShowHelp(true)} aria-label="Rules">?</button>
+        <button className="icon-btn" onClick={() => setShowHelp(true)} aria-label="How to play">?</button>
       </div>
 
       {mode.kind === 'rival' && <div className="rule-strip"><b>{RIVALS[mode.index].name} · {RIVALS[mode.index].ruleName}.</b> {RIVALS[mode.index].ruleText}</div>}
@@ -599,15 +605,9 @@ export default function CardBattle() {
         {showHelp && (
           <div className="overlay" onClick={() => setShowHelp(false)}>
             <div className="modal rules" role="dialog" aria-modal="true" aria-labelledby="rules-title" onClick={(e) => e.stopPropagation()}>
-              <h2 id="rules-title">How it plays</h2>
-              <ol>
-                <li>Each round a <b>prize</b> worth 1 to 6 points is turned up.</li>
-                <li>You and your opponent each choose one card. The opponent locks in first and never sees your card.</li>
-                <li><b>Higher power takes the prize.</b> Power is the rank (2 low, A high), <b>+2</b> when the card matches the prize suit.</li>
-                <li>A <b>tie</b> sends the prize to the pot; the next round’s winner takes the pot too.</li>
-                <li>Both hands hold the <b>same six ranks</b>, and the opponent’s hand is face up. Six rounds; most points wins.</li>
-              </ol>
-              <p className="meta">Rivals add one house rule each, shown above the table.</p>
+              <h2 id="rules-title">How to play</h2>
+              <HowToPlay />
+              {mode.kind === 'rival' && screen === 'game' && <p className="meta">This match: <b>{RIVALS[mode.index].ruleName}.</b> {RIVALS[mode.index].ruleText}</p>}
               <button className="btn btn-primary btn-big" onClick={() => setShowHelp(false)}>Got it</button>
             </div>
           </div>
