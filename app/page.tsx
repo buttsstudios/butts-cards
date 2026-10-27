@@ -590,7 +590,7 @@ export default function CardBattle() {
               </ul>
               <p className="premium-price">$3 <small>one-time</small></p>
               <p className="meta">Unlocks in this browser once the payment is verified. Progress is saved in this browser.</p>
-              <button className="btn btn-premium btn-big" onClick={() => window.open('__NEW_PAYMENT_LINK_CARDS_3__', '_blank')}>
+              <button className="btn btn-premium btn-big" onClick={() => window.open('https://buy.stripe.com/8x24gsed5gqM6OBdpJ7Re0a', '_blank')}>
                 Unlock Premium
               </button>
             </div>
