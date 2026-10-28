@@ -111,7 +111,7 @@ export default function CardBattle() {
     const sessionId = params.get('session_id');
     if (sessionId) {
       window.history.replaceState({}, '', window.location.pathname);
-      fetch(`/api/verify-purchase?session_id=${encodeURIComponent(sessionId)}`)
+      fetch(`/games/cards/api/verify-purchase?session_id=${encodeURIComponent(sessionId)}`)
         .then((r) => r.json())
         .then((d) => {
           if (d && d.premium === true) {
@@ -547,7 +547,7 @@ export default function CardBattle() {
               <button className="btn btn-secondary btn-big" onClick={() => setScreen('title')}>Menu</button>
               {result === 'win' && (
                 <button className="btn btn-secondary btn-big" onClick={() => {
-                  const text = `I beat ${oppName(mode)} ${pScore}–${oScore} at Card Battle. cards.buttsstudios.com`;
+                  const text = `I beat ${oppName(mode)} ${pScore}–${oScore} at Card Battle. buttsstudios.com/games/cards`;
                   if (navigator.share) navigator.share({ text }).catch(() => {});
                   else navigator.clipboard?.writeText(text).then(() => setToast('Copied.')).catch(() => {});
                 }}>Share</button>

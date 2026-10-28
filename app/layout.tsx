@@ -5,10 +5,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Card Battle - Strategic Card Game",
   description: "Six cards each, six prizes on the table. You both choose at once; the higher card takes the points.",
-  metadataBase: new URL("https://cards.buttsstudios.com"),
+  metadataBase: new URL("https://buttsstudios.com"),
   openGraph: {
     type: "website",
-    url: "https://cards.buttsstudios.com",
+    url: "https://buttsstudios.com/games/cards",
     title: "Card Battle - Strategic Card Game",
     description: "Six cards each, six prizes on the table. You both choose at once; the higher card takes the points.",
     images: [
