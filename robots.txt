@@ -1,9 +1,0 @@
-# robots.txt for cards.buttsstudios.com
-User-agent: *
-Allow: /
-
-# Sitemap
-Sitemap: https://cards.buttsstudios.com/sitemap.xml
-
-# Crawl delay
-Crawl-delay: 1

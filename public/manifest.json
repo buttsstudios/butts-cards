@@ -2,7 +2,7 @@
   "name": "Butts Cards",
   "short_name": "Butts Cards",
   "description": "A strategic card game with unique mechanics and competitive multiplayer modes.",
-  "start_url": "/",
+  "start_url": "/games/cards/",
   "display": "standalone",
   "background_color": "#1a1a2e",
   "theme_color": "#9C27B0",

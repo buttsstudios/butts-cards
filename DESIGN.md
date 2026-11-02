@@ -1,7 +1,7 @@
 # Card Battle: design notes
 
 Branch `design/next-level-2026-10-16`, built on `style/studios-sections-2026-10-16` (which carries `fix/verify-purchase`
-and `price/no-99`). Live at cards.buttsstudios.com is still the older `main`; nothing here is deployed.
+and `price/no-99`). Live at buttsstudios.com/games/cards is still the older `main`; nothing here is deployed.
 
 ## 1. Teardown of the version before this branch
 
@@ -122,7 +122,7 @@ round pips. The end screen is an editorial title ("You win.") over a round-by-ro
 
 ## 4. Evidence
 Headless Playwright playtests on xps (desktop 1280 and mobile 390, touch): `~/buttsstudios/staged/games_next_level/cards/`
-(`before-live/` = cards.buttsstudios.com today, `after/` = this branch, with `*-play.gif` recordings) and
+(`before-live/` = buttsstudios.com/games/cards today, `after/` = this branch, with `*-play.gif` recordings) and
 `~/buttsstudios/staged/games_next_level/hub/`. The after run reports no page errors. Production build: 95 kB first-load JS
 for `/` with Firebase split out. Script: `scripts/playtest.cjs`.
 
