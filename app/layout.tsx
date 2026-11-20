@@ -3,14 +3,14 @@ import "./studios-section.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Card Battle - Strategic Card Game",
+  title: "Card Battle · Butts Studios",
   description: "Six cards each, six prizes on the table. You both choose at once; the higher card takes the points.",
   metadataBase: new URL("https://buttsstudios.com"),
   alternates: { canonical: "https://buttsstudios.com/games/cards" },
   openGraph: {
     type: "website",
     url: "https://buttsstudios.com/games/cards",
-    title: "Card Battle - Strategic Card Game",
+    title: "Card Battle · Butts Studios",
     description: "Six cards each, six prizes on the table. You both choose at once; the higher card takes the points.",
     images: [
       {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@buttsstudios",
     creator: "@buttsstudios",
-    title: "Card Battle - Strategic Card Game",
+    title: "Card Battle · Butts Studios",
     description: "Six cards each, six prizes on the table. You both choose at once; the higher card takes the points.",
     images: ["/og-image.png"],
   },

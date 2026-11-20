@@ -120,7 +120,7 @@ export default function CardBattle() {
             if (typeof d.token === 'string' && d.token) storeToken(d.token);
             setPremium(true);
             setIsPremiumUser(true);
-            setToast('Premium unlocked in this browser.');
+            setToast('Full game unlocked in this browser.');
             sfx.unlock();
           }
         })
@@ -291,7 +291,7 @@ export default function CardBattle() {
   const prizesAhead = useMemo(() => prizes.slice(roundIndex + 1).map((z) => prizeWorth(z, prizes.indexOf(z), rules)).sort((a, b) => b - a), [prizes, roundIndex, rules]);
   const result = phase === 'over' ? (pScore > oScore ? 'win' : pScore < oScore ? 'loss' : 'tie') : null;
   const ladderNext = mode.kind === 'rival' && result === 'win' && mode.index + 1 < RIVALS.length ? mode.index + 1 : null;
-  const triesLabel = premium ? 'Premium: no daily limit' : `${dailyTries} of ${DAILY_PLAYS} plays left today`;
+  const triesLabel = premium ? 'Full game: no daily limit' : `${dailyTries} of ${DAILY_PLAYS} plays left today`;
   const firstMatch = !!prog && !prog.tutorialDone;
   const defaultLevel: Level = firstMatch ? 'rookie' : mode.kind === 'quick' && (premium || mode.level !== 'master') ? mode.level : 'sharp';
 
@@ -332,7 +332,7 @@ export default function CardBattle() {
               return (
                 <button key={l.id} className={`plate ${locked ? 'locked' : ''}`}
                   onClick={() => (locked ? setShowUpgrade(true) : startMatch({ kind: 'quick', level: l.id }))}>
-                  <span className="plate-no">0{i + 1}{locked ? <span className="lock">Premium</span> : null}</span>
+                  <span className="plate-no">0{i + 1}{locked ? <span className="lock">Full game</span> : null}</span>
                   <span className="plate-name">{l.name}</span>
                   <span className="plate-kind">{l.blurb}</span>
                   <span className="plate-foot"><span>{rec ? `${rec.wins} of ${rec.played} won` : 'Not played'}</span><span>Score ×{l.mult}</span></span>
@@ -354,7 +354,7 @@ export default function CardBattle() {
         </section>
 
         <section className="sec">
-          <div className="sec-head"><h2>Rival ladder</h2><p>Six rivals, one house rule each. Beat one to face the next and take their card back.{premium ? '' : ' Rival 1 is open to everyone; the rest come with Premium.'}</p></div>
+          <div className="sec-head"><h2>Rival ladder</h2><p>Six rivals, one house rule each. Beat one to face the next and take their card back.{premium ? '' : ' Rival 1 is open to everyone; the rest come with the full game.'}</p></div>
           <ol className="slate">
             {RIVALS.map((r, i) => {
               const beaten = !!prog?.ladderBeaten.includes(r.id);
@@ -369,7 +369,7 @@ export default function CardBattle() {
                     <span className="logline">{r.ruleText}</span>
                     <span className="tr-state">
                       <span className={`back-swatch back-${r.back}`} aria-hidden="true" />
-                      <span>{beaten ? 'Beaten' : open ? 'Play' : !premium && i > 0 ? 'Premium' : 'Locked'}</span>
+                      <span>{beaten ? 'Beaten' : open ? 'Play' : !premium && i > 0 ? 'Full game' : 'Locked'}</span>
                     </span>
                   </button>
                 </li>
@@ -413,7 +413,7 @@ export default function CardBattle() {
         </section>
 
         <div className="title-foot">
-          {!premium ? <button className="btn btn-premium btn-big" onClick={() => setShowUpgrade(true)}>Premium · $3 one-time</button> : <span className="premium-badge">Premium</span>}
+          {!premium ? <button className="btn btn-premium btn-big" onClick={() => setShowUpgrade(true)}>Full game · $3 one-time</button> : <span className="premium-badge">Full game</span>}
           <button className="btn btn-secondary btn-big" onClick={toggleMute} aria-pressed={muted}>{muted ? 'Sound off' : 'Sound on'}</button>
         </div>
         {modals()}
@@ -557,7 +557,7 @@ export default function CardBattle() {
                 }}>Share</button>
               )}
             </div>
-            {ladderNext !== null && !premium && <p className="meta">The rest of the ladder comes with Premium. <button className="linkish" onClick={() => setShowUpgrade(true)}>See Premium</button></p>}
+            {ladderNext !== null && !premium && <p className="meta">The rest of the ladder comes with the full game. <button className="linkish" onClick={() => setShowUpgrade(true)}>See the full game</button></p>}
             <p className="meta">{triesLabel}</p>
           </div>
         </div>
@@ -574,9 +574,9 @@ export default function CardBattle() {
           <div className="overlay" onClick={() => setShowPaywall(false)}>
             <div className="modal" role="dialog" aria-modal="true" aria-labelledby="pw-title" onClick={(e) => e.stopPropagation()}>
               <h2 id="pw-title">That was today’s last play</h2>
-              <p>Plays reset tomorrow. Premium removes the daily limit.</p>
+              <p>Plays reset tomorrow. The full game removes the daily limit.</p>
               <div className="over-actions">
-                <button className="btn btn-premium btn-big" onClick={() => { setShowPaywall(false); setShowUpgrade(true); }}>See Premium</button>
+                <button className="btn btn-premium btn-big" onClick={() => { setShowPaywall(false); setShowUpgrade(true); }}>See the full game</button>
                 <button className="btn btn-secondary btn-big" onClick={() => setShowPaywall(false)}>Close</button>
               </div>
             </div>
@@ -585,7 +585,7 @@ export default function CardBattle() {
         {showUpgrade && (
           <div className="overlay" onClick={() => setShowUpgrade(false)}>
             <div className="modal" role="dialog" aria-modal="true" aria-labelledby="up-title" onClick={(e) => e.stopPropagation()}>
-              <h2 id="up-title">Card Battle Premium</h2>
+              <h2 id="up-title">Card Battle full game</h2>
               <ul className="premium-features">
                 <li><b>Unlimited matches</b> instead of {DAILY_PLAYS} a day</li>
                 <li><b>Master opponent</b>: simulates the rest of the match before every card</li>
@@ -595,9 +595,9 @@ export default function CardBattle() {
               <p className="premium-price">$3 <small>one-time</small></p>
               <p className="meta">Unlocks in this browser once the payment is verified. Progress is saved in this browser.</p>
               <button className="btn btn-premium btn-big" onClick={() => window.open('https://buy.stripe.com/8x24gsed5gqM6OBdpJ7Re0a', '_blank')}>
-                Unlock Premium
+                Unlock the full game
               </button>
-              <RestoreForm onRestored={() => { setIsPremiumUser(true); setShowUpgrade(false); setToast('Premium restored in this browser.'); }} />
+              <RestoreForm onRestored={() => { setIsPremiumUser(true); setShowUpgrade(false); setToast('Full game restored in this browser.'); }} />
             </div>
           </div>
         )}
