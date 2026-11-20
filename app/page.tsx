@@ -1,6 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { storeToken, verifyEntitlement, premiumNow } from '@/lib/entitlement';
+import RestoreForm from '@/lib/RestoreForm';
 import {
   login as authLogin,
   getPlayerName,
@@ -115,6 +117,7 @@ export default function CardBattle() {
         .then((r) => r.json())
         .then((d) => {
           if (d && d.premium === true) {
+            if (typeof d.token === 'string' && d.token) storeToken(d.token);
             setPremium(true);
             setIsPremiumUser(true);
             setToast('Premium unlocked in this browser.');
@@ -128,7 +131,8 @@ export default function CardBattle() {
     setPlayerName(getPlayerName());
     setNameDraft(getPlayerName());
     setDailyTries(getDailyTries());
-    setIsPremiumUser(isPremium());
+    setIsPremiumUser(premiumNow());
+    if (!sessionId) verifyEntitlement().then(setIsPremiumUser);
     setProgress(loadProgress());
     return clearTimers;
   }, []);
@@ -593,6 +597,7 @@ export default function CardBattle() {
               <button className="btn btn-premium btn-big" onClick={() => window.open('https://buy.stripe.com/8x24gsed5gqM6OBdpJ7Re0a', '_blank')}>
                 Unlock Premium
               </button>
+              <RestoreForm onRestored={() => { setIsPremiumUser(true); setShowUpgrade(false); setToast('Premium restored in this browser.'); }} />
             </div>
           </div>
         )}
