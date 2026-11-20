@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Card Battle - Strategic Card Game",
   description: "Six cards each, six prizes on the table. You both choose at once; the higher card takes the points.",
   metadataBase: new URL("https://buttsstudios.com"),
+  alternates: { canonical: "https://buttsstudios.com/games/cards" },
   openGraph: {
     type: "website",
     url: "https://buttsstudios.com/games/cards",
@@ -47,11 +48,12 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap" rel="stylesheet" />
       </head>
       <body>
+        <a className="skip" href="#main">Skip to the game</a>
         {/* bs:bar */}
         <div className="bs-bar" role="banner"><div className="bs-bar-in"><a className="bs-mark" href="https://buttsstudios.com/" aria-label="Butts Studios home"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" strokeWidth="12"><rect x="10" y="10" width="80" height="80"/><path d="M10 10 L90 90 M90 10 L10 90"/></g></svg><span>Butts Studios</span></a><span className="bs-crumb"><span className="bs-sep">/</span><a className="bs-sec" href="https://buttsstudios.com/games"><i className="bs-dot" />Games</a><span className="bs-sep">/</span><span className="bs-here">Card Battle</span></span><div className="bs-nav" role="navigation" aria-label="Butts Studios sections"><a href="https://buttsstudios.com/books">Books</a><a href="https://buttsstudios.com/video">Video</a><a href="https://buttsstudios.com/games" aria-current="true">Games</a></div></div></div>
         {children}
         {/* bs:foot */}
-        <div className="bs-foot" role="contentinfo"><div className="bs-foot-in"><div><a className="bs-mark" href="https://buttsstudios.com/" aria-label="Butts Studios home"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" strokeWidth="12"><rect x="10" y="10" width="80" height="80"/><path d="M10 10 L90 90 M90 10 L10 90"/></g></svg><span>Butts Studios</span></a><div className="bs-foot-line">Made of story.</div></div><div className="bs-foot-cols" role="navigation" aria-label="Butts Studios"><a href="https://buttsstudios.com/books">Books</a><a href="https://buttsstudios.com/video">Video</a><a href="https://buttsstudios.com/games" aria-current="true">Games</a><a href="https://buttsstudios.com/">Studio</a><a href="https://www.instagram.com/buttsstudios/" target="_blank" rel="noopener">Instagram</a></div></div><div className="bs-foot-base"><span>© 2026 Butts Studios</span><span className="bs-legal"><a href="https://buttsstudios.com/terms">Terms</a><a href="https://buttsstudios.com/refunds">Refunds</a><a href="https://buttsstudios.com/privacy">Privacy</a></span></div></div>
+        <div className="bs-foot" role="contentinfo"><div className="bs-foot-in"><div><a className="bs-mark" href="https://buttsstudios.com/" aria-label="Butts Studios home"><svg viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" strokeWidth="12"><rect x="10" y="10" width="80" height="80"/><path d="M10 10 L90 90 M90 10 L10 90"/></g></svg><span>Butts Studios</span></a><div className="bs-foot-line">Made of story.</div></div><div className="bs-foot-cols" role="navigation" aria-label="Butts Studios"><a href="https://buttsstudios.com/books">Books</a><a href="https://buttsstudios.com/video">Video</a><a href="https://buttsstudios.com/games" aria-current="true">Games</a><a href="https://buttsstudios.com/">Studio</a><a href="https://buttsstudios.com/contact">Contact</a><a href="https://www.instagram.com/buttsstudios/" target="_blank" rel="noopener">Instagram</a></div></div><div className="bs-foot-base"><span>© 2026 Butts Studios</span><span className="bs-legal"><a href="https://buttsstudios.com/games/cards/terms">Terms</a><a href="https://buttsstudios.com/games/cards/refunds">Refunds</a><a href="https://buttsstudios.com/games/cards/privacy">Privacy</a></span></div></div>
       </body>
     </html>
   );

@@ -299,7 +299,7 @@ export default function CardBattle() {
   if (screen === 'title') {
     const lv = (id: Level) => LEVELS.find((l) => l.id === id)!;
     return (
-      <main className="cb title-screen">
+      <main className="cb title-screen" id="main" tabIndex={-1}>
         <section className="hero">
           <p className="eyebrow">Butts Studios · Games · 02</p>
           <div className="hero-grid">
@@ -426,7 +426,7 @@ export default function CardBattle() {
   const slotClass = (who: 'p' | 'o') => (!last ? '' : last.outcome === 'tie' ? 'tie' : (last.outcome === 'player') === (who === 'p') ? 'won' : 'lost');
   const lowClubs = rules.lowWinsClubs && prize?.suit === '♣';
   return (
-    <main className={`cb game ${phase}`}>
+    <main className={`cb game ${phase}`} id="main" tabIndex={-1}>
       <div className="hud">
         <button className="icon-btn" onClick={() => { clearTimers(); setScreen('title'); }} aria-label="Back to menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
         <div className={`score opp ${bump === 'o' ? 'bump' : ''}`}><span>{oppName(mode)}</span><b>{oScore}</b></div>
