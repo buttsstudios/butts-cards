@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "Six cards each, six prizes on the table. You both choose at once; the higher card takes the points.",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://buttsstudios.com/games/cards/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Card Battle Game",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     creator: "@buttsstudios",
     title: "Card Battle · Butts Studios",
     description: "Six cards each, six prizes on the table. You both choose at once; the higher card takes the points.",
-    images: ["/og-image.png"],
+    images: ["https://buttsstudios.com/games/cards/og-image.jpg"],
   },
 };
 
